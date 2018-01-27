@@ -22,15 +22,20 @@ namespace SingleSignOn.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
+
                 var action = Request.QueryString[Action];
 
+                //如果是登录请求
                 if (action == SignIn)
                 {
+                    //转登录处理
                     var formData = ProcessSignIn(Request.Url, (ClaimsPrincipal)User);
                     return new ContentResult() { Content = formData, ContentType = "text/html" };
                 }
+                //如果是注销请求
                 else if (action == SignOut)
                 {
+                    //转注销处理
                     ProcessSignOut(Request.Url, (ClaimsPrincipal)User, (HttpResponse)HttpContext.Items["HttpResponse"]);
                 }
             }
@@ -38,20 +43,35 @@ namespace SingleSignOn.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 登录请求处理
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
         private static string ProcessSignIn(Uri url, ClaimsPrincipal user)
         {
+            //创建登录请求消息
             var requestMessage = (SignInRequestMessage)WSFederationMessage.CreateFromUri(url);
+            //提取证书
             var signingCredentials = new X509SigningCredentials(CustomSecurityTokenService.GetCertificate(ConfigurationManager.AppSettings["SigningCertificateName"]));
 
             // Cache?
             var config = new SecurityTokenServiceConfiguration(ConfigurationManager.AppSettings["IssuerName"], signingCredentials);
-
+            //实例化自定义令牌服务类
             var sts = new CustomSecurityTokenService(config);
+            //交给真正的登录处理方法
             var responseMessage = FederatedPassiveSecurityTokenServiceOperations.ProcessSignInRequest(requestMessage, user, sts);
-            
+            //得到回复结果
             return responseMessage.WriteFormPost();
         }
 
+        /// <summary>
+        /// 注销请求处理
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <param name="user"></param>
+        /// <param name="response"></param>
         private static void ProcessSignOut(Uri uri, ClaimsPrincipal user, HttpResponse response)
         {
             // Prepare url to internal logout page (which signs-out of all relying parties).
@@ -74,8 +94,10 @@ namespace SingleSignOn.Controllers
 
             // Redirect user to logout page (which signs out of all relying parties and redirects back to originating relying party).
             uri = new Uri(url);
-
+            //准备注销的请求消息
             var requestMessage = (SignOutRequestMessage)WSFederationMessage.CreateFromUri(uri);
-            FederatedPassiveSecurityTokenServiceOperations.ProcessSignOutRequest(requestMessage, user, requestMessage.Reply, response);        }
+            //交给真正的注销处理方法
+            FederatedPassiveSecurityTokenServiceOperations.ProcessSignOutRequest(requestMessage, user, requestMessage.Reply, response);
+        }
     }
 }

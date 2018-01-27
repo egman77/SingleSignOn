@@ -12,3 +12,8 @@
 Debug/
 Release/
 packages/
+/.vs/SingleSignOn/v15/Server/sqlite3/db.lock
+/.vs/SingleSignOn/v15/Server/sqlite3/storage.ide
+/.vs/SingleSignOn/v15/Server/sqlite3/storage.ide-shm
+/.vs/SingleSignOn/v15/Server/sqlite3/storage.ide-wal
+/.vs/config/applicationhost.config
