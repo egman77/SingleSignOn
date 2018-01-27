@@ -31,7 +31,7 @@ namespace SingleSignOn.Controllers
                 if (loginModel.Username == "abc" && loginModel.Password == "123")
                 {
                     //如果有IP--Policy转换,而在此进行
-                    FormsAuthentication.SetAuthCookie(loginModel.Username, true);
+                    FormsAuthentication.SetAuthCookie($"{loginModel.Username}@qq.com|1983-10-23|张三", true);
                     return Redirect(returnUrl);
                 }
                 else
