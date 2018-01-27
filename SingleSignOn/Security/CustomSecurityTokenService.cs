@@ -7,18 +7,39 @@ using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
+using System.Web.Configuration;
 
 namespace SingleSignOn.Security
 {
     public class CustomSecurityTokenService : SecurityTokenService
     {
+      //  private readonly SigningCredentials SigningCredentials;
+      //  private readonly EncryptingCredentials encryptingCreds;
+
+       /// <summary>
+       /// 客户端白名单
+       /// </summary>
         static readonly string[] SupportedWebApps = { };
 
         public CustomSecurityTokenService(SecurityTokenServiceConfiguration securityTokenServiceConfiguration)
             : base(securityTokenServiceConfiguration)
         {
+            //this.SigningCredentials = new X509SigningCredentials(
+            //    GetCertificate(WebConfigurationManager.AppSettings["SigningCertificateName"])
+            //    );
+
+            //if (!string.IsNullOrWhiteSpace(WebConfigurationManager.AppSettings["EncryptingCertificateName"]))
+            //{
+            //    this.encryptingCreds = new X509EncryptingCredentials(
+            //       GetCertificate( WebConfigurationManager.AppSettings["EncryptingCertificateName"])
+            //        );
+            //}
         }
 
+        /// <summary>
+        /// 客户端白名单校验
+        /// </summary>
+        /// <param name="appliesTo"></param>
         static void ValidateAppliesTo(EndpointReference appliesTo)
         {
             if (SupportedWebApps == null || SupportedWebApps.Length == 0) return;

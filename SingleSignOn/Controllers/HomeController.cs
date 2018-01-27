@@ -54,12 +54,15 @@ namespace SingleSignOn.Controllers
             //创建登录请求消息
             var requestMessage = (SignInRequestMessage)WSFederationMessage.CreateFromUri(url);
             //提取证书
-            var signingCredentials = new X509SigningCredentials(CustomSecurityTokenService.GetCertificate(ConfigurationManager.AppSettings["SigningCertificateName"]));
+          //  var signingCredentials = new X509SigningCredentials(CustomSecurityTokenService.GetCertificate(ConfigurationManager.AppSettings["SigningCertificateName"]));
 
             // Cache?
-            var config = new SecurityTokenServiceConfiguration(ConfigurationManager.AppSettings["IssuerName"], signingCredentials);
-            //实例化自定义令牌服务类
-            var sts = new CustomSecurityTokenService(config);
+            //创建令牌服务配置类
+            // var config = new SecurityTokenServiceConfiguration(ConfigurationManager.AppSettings["IssuerName"], signingCredentials);
+            ////实例化自定义令牌服务类
+            //var sts = new CustomSecurityTokenService(config);
+            var sts = CustomSecurityTokenServiceConfiguration.Current.CreateSecurityTokenService(); 
+            
             //交给真正的登录处理方法(颁发令牌)
             var responseMessage = FederatedPassiveSecurityTokenServiceOperations.ProcessSignInRequest(requestMessage, user, sts);
             //得到回复结果
