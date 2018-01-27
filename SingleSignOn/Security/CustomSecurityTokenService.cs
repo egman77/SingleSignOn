@@ -85,6 +85,11 @@ namespace SingleSignOn.Security
             return identity;
         }
 
+        /// <summary>
+        /// 去查找证书
+        /// </summary>
+        /// <param name="subjectName"></param>
+        /// <returns></returns>
         public static X509Certificate2 GetCertificate(string subjectName)
         {
             var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
@@ -97,8 +102,10 @@ namespace SingleSignOn.Security
                 var certs = certificates.OfType<X509Certificate2>().Where(x => x.SubjectName.Name.Equals(subjectName, StringComparison.OrdinalIgnoreCase)).ToList();
 
                 if (certs.Count == 0)
+                    //未找到该名下的证书
                     throw new ApplicationException(string.Format("No certificate was found for subject Name {0}", subjectName));
                 else if (certs.Count > 1)
+                    //找到多个该名下的同名证书
                     throw new ApplicationException(string.Format("There are multiple certificates for subject Name {0}", subjectName));
 
                 return new X509Certificate2(certs[0]);
