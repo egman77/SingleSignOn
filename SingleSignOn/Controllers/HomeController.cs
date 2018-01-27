@@ -60,7 +60,7 @@ namespace SingleSignOn.Controllers
             var config = new SecurityTokenServiceConfiguration(ConfigurationManager.AppSettings["IssuerName"], signingCredentials);
             //实例化自定义令牌服务类
             var sts = new CustomSecurityTokenService(config);
-            //交给真正的登录处理方法
+            //交给真正的登录处理方法(颁发令牌)
             var responseMessage = FederatedPassiveSecurityTokenServiceOperations.ProcessSignInRequest(requestMessage, user, sts);
             //得到回复结果
             return responseMessage.WriteFormPost();
@@ -76,27 +76,27 @@ namespace SingleSignOn.Controllers
         {
             // Prepare url to internal logout page (which signs-out of all relying parties).
             string url = uri.OriginalString;
-            int index = url.IndexOf("&wreply=");
-            if (index != -1)
-            {
-                index += 8;
-                string baseUrl = url.Substring(0, index);
-                string wreply = url.Substring(index, url.Length - index);
+            //int index = url.IndexOf("&wreply=");
+            //if (index != -1)
+            //{
+            //    index += 8;
+            //    string baseUrl = url.Substring(0, index);
+            //    string wreply = url.Substring(index, url.Length - index);
 
-                // Get the base url (domain and port).
-                string strPathAndQuery = uri.PathAndQuery;
-                string hostUrl = uri.AbsoluteUri.Replace(strPathAndQuery, "/");
+            //    // Get the base url (domain and port).
+            //    string strPathAndQuery = uri.PathAndQuery;
+            //    string hostUrl = uri.AbsoluteUri.Replace(strPathAndQuery, "/");
 
-                wreply = HttpUtility.UrlEncode(hostUrl + "logout?wreply=" + wreply);
+            //    wreply = HttpUtility.UrlEncode(hostUrl + "logout?wreply=" + wreply);
 
-                url = baseUrl + wreply;
-            }
+            //    url = baseUrl + wreply; //目的是为了返回STS的logout页面
+            //}
 
             // Redirect user to logout page (which signs out of all relying parties and redirects back to originating relying party).
             uri = new Uri(url);
             //准备注销的请求消息
             var requestMessage = (SignOutRequestMessage)WSFederationMessage.CreateFromUri(uri);
-            //交给真正的注销处理方法
+            //交给真正的注销处理方法(注销令牌)
             FederatedPassiveSecurityTokenServiceOperations.ProcessSignOutRequest(requestMessage, user, requestMessage.Reply, response);
         }
     }
