@@ -64,8 +64,16 @@ namespace SingleSignOn.Security
             return scope;
         }
 
+        /// <summary>
+        /// 这里完成RP-STS的Transform转换
+        /// </summary>
+        /// <param name="principal"></param>
+        /// <param name="request"></param>
+        /// <param name="scope"></param>
+        /// <returns></returns>
         protected override ClaimsIdentity GetOutputClaimsIdentity(ClaimsPrincipal principal, RequestSecurityToken request, Scope scope)
         {
+          
             var claims = new[]
                 {
                     new Claim(System.IdentityModel.Claims.ClaimTypes.Name, principal.Identity.Name),

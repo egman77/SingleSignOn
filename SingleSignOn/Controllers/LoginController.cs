@@ -14,7 +14,12 @@ namespace SingleSignOn.Controllers
         public ActionResult Index(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+
+            LoginModel loginModel = new LoginModel() {
+                Username="abc",
+                Password="123"
+            };
+            return View(loginModel);
         }
 
         [HttpPost]
@@ -22,8 +27,10 @@ namespace SingleSignOn.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (loginModel.Username == "user" && loginModel.Password == "password")
+                //模拟IP验证
+                if (loginModel.Username == "abc" && loginModel.Password == "123")
                 {
+                    //如果有IP--Policy转换,而在此进行
                     FormsAuthentication.SetAuthCookie(loginModel.Username, true);
                     return Redirect(returnUrl);
                 }
