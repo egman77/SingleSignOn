@@ -3,4 +3,6 @@
 }
 
 <h2>你已经登录:@(User.Identity.Name)</h2>
-@Html.RouteLink("首页","Default")
+
+@Html.RouteLink("返回首页","Default")<br/>
+@Html.ActionLink("注销","Logout","User")<br />
