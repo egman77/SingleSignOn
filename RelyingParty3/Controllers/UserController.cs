@@ -20,9 +20,12 @@ namespace RelyingParty3.Controllers
             //// Load Identity Configuration
             //FederationConfiguration config = FederatedAuthentication.FederationConfiguration;
 
-          
+           // FederatedAuthentication.ServiceConfiguration.
+
+            var uri = new Uri("http://localhost:26758/");
+
             //// Sign out of WIF.
-            //WSFederationAuthenticationModule.FederatedSignOut(new Uri(ConfigurationManager.AppSettings["ida:Issuer"]), new Uri(config.WsFederationConfiguration.Realm));
+            WSFederationAuthenticationModule.FederatedSignOut(new Uri(ConfigurationManager.AppSettings["ida:Issuer"]), uri);
 
             return View();
         }
