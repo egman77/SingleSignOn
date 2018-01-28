@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Web;
+using Microsoft.IdentityModel.Web.Configuration;
+using System;
 using System.Collections.Generic;
 using System.IdentityModel;
 using System.IdentityModel.Tokens;
@@ -21,17 +24,28 @@ namespace RelyingParty3
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-            //// Only switch to RSA encryption for SSO if a certificateReference exists in the federationConfiguration web.config section. Otherwise, default to DPAPI. <certificateReference x509FindType="FindByThumbprint" findValue="DF4CE1055D36337F017E1A1F9376B560FC40DA77"/>
-            //foreach (FederationConfigurationElement config in SystemIdentityModelServicesSection.Current.FederationConfigurationElements)
-            //{
-            //    CertificateReferenceElement certificate = config.ServiceCertificate.CertificateReference;
-            //    if (!string.IsNullOrEmpty(certificate.FindValue))
-            //    {
-            //        // Initialize single-sign-on certificate reference.
-            //        FederatedAuthentication.FederationConfigurationCreated += OnServiceConfigurationCreated;
-            //    }
-            //}
+
+            //FederatedAuthentication.ServiceConfigurationCreated += OnServiceConfigurationCreated;
+
+          
         }
+
+        ///// <summary>
+        ///// By default, WIF uses DPAPI to encrypt token.
+        ///// But DPAPI is not supported in Windows Azure.
+        ///// So we use a certificate instead.
+        ///// </summary>
+        //void OnServiceConfigurationCreated(object sender, ServiceConfigurationCreatedEventArgs e)
+        //{
+        //    List<CookieTransform> sessionTransforms = new List<CookieTransform>(new CookieTransform[]
+        //    {
+        //        new DeflateCookieTransform(),
+        //        new RsaEncryptionCookieTransform(e.ServiceConfiguration.ServiceCertificate),
+        //        new RsaSignatureCookieTransform(e.ServiceConfiguration.ServiceCertificate)
+        //    });
+        //    SessionSecurityTokenHandler sessionHandler = new SessionSecurityTokenHandler(sessionTransforms.AsReadOnly());
+        //    e.ServiceConfiguration.SecurityTokenHandlers.AddOrReplace(sessionHandler);
+        //}
 
         //void OnServiceConfigurationCreated(object sender, FederationConfigurationCreatedEventArgs e)
         //{
