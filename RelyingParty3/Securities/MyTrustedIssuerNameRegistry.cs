@@ -6,7 +6,7 @@ using System.Web;
 
 namespace RelyingParty3.Securities
 {
-    public class MyStrustedIssurerNameRegistry : Microsoft.IdentityModel.Tokens.IssuerNameRegistry
+    public class MyTrustedIssuerNameRegistry : Microsoft.IdentityModel.Tokens.IssuerNameRegistry
     {
         /// <summary>
         /// 根据已获取的安全令牌中提取出发布者名
