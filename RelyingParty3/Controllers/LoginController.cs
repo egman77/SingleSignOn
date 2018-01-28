@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.IdentityModel.Web;
+using System;
 using System.Collections.Generic;
-using System.IdentityModel.Services;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -19,7 +19,8 @@ namespace RelyingParty3.Controllers
                 // FederatedAuthentication.WSFederationAuthenticationModule.RedirectToIdentityProvider("MyAsk.dev", "http://localhost:26756/user", true);
 
                 //RedirectToIdentityProvider与 Signin都可行
-                FederatedAuthentication.WSFederationAuthenticationModule.SignIn("xxx");
+                // FederatedAuthentication.WSFederationAuthenticationModule.SignIn("xxx");
+                FederatedAuthentication.WSFederationAuthenticationModule.RedirectToIdentityProvider("MyAsk.dev", "http://localhost:26758/user", true);
             }
            
             return View();
