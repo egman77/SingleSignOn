@@ -7,7 +7,7 @@ using System.Web.Routing;
 
 namespace RelyingParty2
 {
-    public class RouteConfig
+    public static  class RouteConfig
     {
         public static void RegisterRoutes(RouteCollection routes)
         {

@@ -34,9 +34,8 @@ namespace SingleSignOn.Security
             get
             {
                 HttpApplicationState app = HttpContext.Current.Application;
-                CustomSecurityTokenServiceConfiguration config = app.Get(CustomSecurityTokenServiceConfigurationKey) as CustomSecurityTokenServiceConfiguration;
 
-                if (config != null)
+                if (app.Get(CustomSecurityTokenServiceConfigurationKey) is CustomSecurityTokenServiceConfiguration config)
                     return config;
 
                 //双检锁,获取临界区

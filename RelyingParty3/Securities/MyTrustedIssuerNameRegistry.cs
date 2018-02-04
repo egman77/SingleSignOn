@@ -16,10 +16,9 @@ namespace RelyingParty3.Securities
         /// <exception cref="SecurityTokenException">在没有找到可信任的发行者名称时抛出此异常</exception>
         public override string GetIssuerName(SecurityToken securityToken)
         {
-            X509SecurityToken x509token = securityToken as X509SecurityToken;
-            if(x509token!=null)
+            if (securityToken is X509SecurityToken x509token)
             {
-                if(String.Equals(x509token.Certificate.SubjectName.Name, "CN=localhost"))
+                if (String.Equals(x509token.Certificate.SubjectName.Name, "CN=localhost"))
                 {
                     return x509token.Certificate.SubjectName.Name;
                 }

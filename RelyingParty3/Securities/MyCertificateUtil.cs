@@ -9,7 +9,7 @@ namespace RelyingParty3.Securities
     /// <summary>
     /// X509证书帮助类
     /// </summary>
-    public class MyCertificateUtil
+    public static  class MyCertificateUtil
     {
         /// <summary>
         /// 当指定的存储名与区下找到与主题相关的证书
